@@ -1,5 +1,5 @@
 # Use the Python 3.11 image
-FROM python:3.11.4-slim
+FROM python:3.10-slim
 
 # Set the working directory in the container
 WORKDIR /AiGuard
