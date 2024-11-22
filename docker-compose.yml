@@ -1,0 +1,23 @@
+version: '3.7'
+
+networks:
+  aiguard:
+
+volumes:
+  aiguard-opt:
+
+services:
+  aiguard:
+    image: aiguard:latest  # You can use a fixed image name like 'aiguard' or set a version tag
+    container_name: aiguard
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+    networks:
+      - aiguard
+    ports:
+      - '50052:50052'  # Ensure this matches the port for gRPC
+    volumes:
+      - ./opt:/opt  # If you have any directories to mount (optional)

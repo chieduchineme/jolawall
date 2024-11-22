@@ -1,0 +1,81 @@
+# Python-specific
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+.env
+*.venv
+.venv/
+
+# Virtual environments
+venv/
+ENV/
+env/
+*.egg-info/
+.eggs/
+
+# Django-specific
+*.log
+*.pot
+*.py[cod]
+*.sqlite3
+db.sqlite3
+
+# Byte-compiled / optimized / DLL files
+*.pyo
+*.pyc
+__pycache__/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg
+MANIFEST
+
+# Pytest cache
+.cache/
+
+# MyPy
+.mypy_cache/
+
+# Pytype cache
+.pytype/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyCharm / IntelliJ
+.idea/
+
+# VSCode
+.vscode/
+
+# Docker
+docker-compose.override.yml
+*.dockerignore
+
+# Secrets and credentials
+secrets.json
+config.json
+
+# Temporary files
+*.bak
+*.swp
+*.tmp
+*.temp
+~$*
+
+# System files
+.DS_Store
+Thumbs.db

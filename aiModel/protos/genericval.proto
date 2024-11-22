@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package genericval;
+
+message AppGuardGenericVal {
+  oneof value {
+    string string_val = 1;
+    StringVec string_vec_val = 2;
+    int64 int_val = 3;
+    double float_val = 4;
+  }
+}
+
+message StringVec {
+  repeated string values = 1;
+}

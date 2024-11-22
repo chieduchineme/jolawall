@@ -1,0 +1,43 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: chieduchineme
+          password: Bakedbread@46
+
+      - name: Build Docker image
+        run: |
+          VERSION_TAG=${{ github.ref_name }}
+          docker build -t your-dockerhub-username/aiguard:$VERSION_TAG .
+
+      - name: Push Docker image
+        run: |
+          VERSION_TAG=${{ github.ref_name }}
+          docker push your-dockerhub-username/aiguard:$VERSION_TAG

@@ -1,0 +1,67 @@
+workflow:
+  auto_cancel:
+    on_new_commit: conservative
+    on_job_failure: all
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_FORCE_HTTPS: "true"
+
+clean-docker:
+  stage: .pre
+  script:
+    - docker system prune -a -f --volumes
+    - docker compose rm -f -s -v
+
+# In this case, we use the official Python image for building the Django app
+image: python:3.11.4-slim
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  IMAGE_TAG: "latest"
+  # No environment-specific variables
+
+before_script:
+  # Install dependencies in the container before running any commands
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
+# Build the Docker image
+build:
+  stage: build
+  script:
+    - echo "Building Docker image for aiguard project"
+    - docker build -t aiguard:$CI_COMMIT_REF_NAME .
+  only:
+    - main  # option to change to any branch where we want to trigger the build
+
+test:
+  stage: test
+  script:
+    - echo "Running tests inside the Docker container, pylint, pytype"
+    - docker run --rm aiguard:$CI_COMMIT_REF_NAME pylint mainApp  # Lint the demo module/app
+    - docker run --rm aiguard:$CI_COMMIT_REF_NAME pytype  # Run pytype analysis
+  only:
+    - main  # Run tests only on the AiGuard main branch
+
+# Deploy to environment
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying the app to test"
+    - docker-compose -f docker-compose.yml up -d  
+  only:
+    - main  # only AiGuard main branch
+
+# We might not need this - Optional
+cleanup:
+  stage: cleanup
+  script:
+    - echo "Cleaning up Docker images to save space"
+    - docker rmi aiguard:$CI_COMMIT_REF_NAME
+  only:
+    - main  # Clean up on the main branch
