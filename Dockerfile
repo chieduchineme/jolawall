@@ -6,7 +6,7 @@ WORKDIR /AiGuard
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the application code into the container
 COPY . /AiGuard
